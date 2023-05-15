@@ -5,8 +5,8 @@ import re
 app = Flask(__name__)
 
 # Load the model
-model1 = pickle.load(open('.\cvMailTokeniser.pkl', 'rb'))
-model2 = pickle.load(open('.\mailClassifier.pkl', 'rb'))
+model1 = pickle.load(open('cvMailTokeniser.pkl', 'rb'))
+model2 = pickle.load(open('mailClassifier.pkl', 'rb'))
 
 
 def emailCleaner(email):
