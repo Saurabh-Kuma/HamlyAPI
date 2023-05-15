@@ -5,16 +5,13 @@ import re
 app = Flask(__name__)
 
 # Load the model
-model1 = pickle.load(open('cvMailTokeniser.pkl', 'rb'))
-model2 = pickle.load(open('mailClassifier.pkl', 'rb'))
+tokeniserModel = pickle.load(open('cvMailTokeniser.pkl', 'rb'))
+classifierModel = pickle.load(open('mailClassifier.pkl', 'rb'))
 
-
+#email Cleaner Function
 def emailCleaner(email):
     """This method accepts emails and returns absolutely cleaned emails by removing un-necessary headings"""
     
-    # printing un-processed email
-    # print("Email is: ",email)
-
     # converting emial into lower case
     emailsInLower = email.lower()
 
@@ -36,19 +33,17 @@ def emailCleaner(email):
 def predict_mail():
     # Get the data from the POST request
     data = request.get_json(force=True)
-    print(data)
     #cleaning data
     cleanData = emailCleaner(data['text'])
-    # [np.array(data['text'])]
     cleanedEmails = []
     cleanedEmails.append(cleanData)
     # Make prediction using the model loaded from disk
-    transformed = model1.transform(cleanedEmails)
-    prediction = model2.predict(transformed) 
+    tokenisedData = tokeniserModel.transform(cleanedEmails)
+    prediction = classifierModel.predict(tokenisedData) 
     # Take the first value of prediction
     if(prediction[0]==0):
-        return (cleanData+ ": This Mail is Not Spam")
-    return (cleanData+ ": This Mail is Spam! Stay Alert")
+        return ("This Mail is Not Spam")
+    return ("This Mail is Spam! Stay Alert")
 
 
 if __name__ == '__main__':
