@@ -28,6 +28,10 @@ def emailCleaner(email):
     cleanedEmail = re.sub(r'\s{2,}', ' ', emailWithoutPunctuation.strip())
     return cleanedEmail
 
+@app.route('/')
+def firstPage():
+    return ("Flask App is Working")
+
 
 @app.route('/predict_mail', methods=['POST'])
 def predict_mail():
